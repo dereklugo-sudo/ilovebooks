@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ILoveBooks</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📚</text></svg>">
+<link rel="preconnect" href="https://www.googleapis.com" crossorigin>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Limelight&family=Poiret+One&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Great+Vibes&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Abril+Fatface&display=swap" rel="stylesheet">
+<style>
+/* ====== TEMA (lo puedes cambiar desde el panel de administrador) ====== */
+:root{
+  --fondo:#2a1810;      /* café oscuro */
+  --papel:#f3e6cc;      /* crema / papel antiguo */
+  --tinta:#2b1a12;      /* texto sobre papel */
+  --oro:#c9a14a;        /* dorado art déco */
+  --rojo:#7a1e1e;       /* vino / burdeos */
+  --negro:#14100c;
+  --fuente-titulo:'Limelight', 'Abril Fatface', serif;
+  --fuente-texto:'Cormorant Garamond', 'Playfair Display', Georgia, serif;
+  --fuente-script:'Great Vibes', cursive;
+  --radio:4px;
+  --patron:1;           /* 1 = patrón art déco visible, 0 = oculto */
+}
+*{box-sizing:border-box}
+html{background:var(--fondo)}
+body{
+  margin:0;font-family:var(--fuente-texto);font-size:1.12rem;color:var(--papel);line-height:1.55;
+  background-color:var(--fondo);
+  position:relative;min-height:100vh;
+}
+/* Patrón de abanicos art déco */
+body::before{
+  content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;opacity:calc(var(--patron) * .16);
+  background:
+    radial-gradient(circle at 50% 100%, transparent 18px, var(--oro) 19px, var(--oro) 20px, transparent 21px, transparent 28px, var(--oro) 29px, var(--oro) 30px, transparent 31px, transparent 38px, var(--oro) 39px, var(--oro) 40px, transparent 41px) 0 0/80px 40px;
+}
+
+/* ---------- Encabezado ---------- */
+header{
+  background:var(--negro);color:var(--papel);padding:.7rem 1rem;
+  display:flex;flex-wrap:wrap;gap:.6rem;align-items:center;justify-content:space-between;
+  position:sticky;top:0;z-index:5;
+  border-bottom:3px double var(--oro);
+  box-shadow:0 4px 18px rgba(0,0,0,.5);
+}
+header b{font-family:var(--fuente-titulo);font-weight:400;font-size:1.6rem;color:var(--oro);letter-spacing:.08em}
+nav{display:flex;flex-wrap:wrap;gap:.25rem}
+nav button{
+  background:transparent;border:1px solid transparent;color:var(--papel);
+  font-family:'Poiret One',var(--fuente-texto);font-size:1rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+  padding:.4rem .8rem;border-radius:var(--radio);cursor:pointer;
+}
+nav button.on,nav button:hover{border-color:var(--oro);color:var(--oro)}
+
+main{max-width:860px;margin:0 auto;padding:1.5rem 1rem 3rem}
+section{display:none}section.on{display:block}
+
+h1,h2{font-family:var(--fuente-titulo);font-weight:400;color:var(--oro);letter-spacing:.04em}
+h1{font-size:clamp(2.6rem,9vw,4.6rem);margin:.2rem 0;line-height:1;text-shadow:3px 3px 0 var(--rojo)}
+h2{font-size:1.9rem;text-align:center}
+h2::after{content:"◆";display:block;font-size:.7rem;color:var(--oro);letter-spacing:1rem;margin-top:.2rem}
+.script{font-family:var(--fuente-script);color:var(--papel);font-size:clamp(2rem,7vw,3rem);margin:0;line-height:1.1}
+
+/* ---------- Portada ---------- */
+.hero{
+  text-align:center;padding:2.2rem 1.4rem;margin-top:.5rem;position:relative;
+  background:
+    repeating-conic-gradient(from 180deg at 50% 0%, rgba(201,161,74,.10) 0 4deg, transparent 4deg 10deg),
+    linear-gradient(var(--rojo), #3d0f0f);
+  border:2px solid var(--oro);outline:1px solid var(--oro);outline-offset:6px;
+  border-radius:var(--radio);
+}
+.hero .sub{font-family:'Poiret One',sans-serif;font-weight:700;letter-spacing:.35em;text-transform:uppercase;font-size:.8rem;color:var(--oro);margin:.3rem 0 1.2rem}
+.hero p{max-width:600px;margin:0 auto 1rem}
+
+/* ---------- Botones ---------- */
+.btn{
+  background:var(--oro);color:var(--negro);border:0;border-radius:var(--radio);
+  padding:.75rem 1.5rem;font-family:'Poiret One',sans-serif;font-weight:700;font-size:1rem;letter-spacing:.15em;text-transform:uppercase;
+  cursor:pointer;text-decoration:none;display:inline-block;margin:.25rem 0;
+  box-shadow:0 0 0 2px var(--negro), 0 0 0 3px var(--oro);
+}
+.btn:hover{filter:brightness(1.12)}
+.btn.sec{background:var(--rojo);color:var(--papel)}
+
+/* ---------- Tarjetas de papel ---------- */
+.card{
+  background:var(--papel);color:var(--tinta);
+  border-radius:var(--radio);padding:1.1rem 1.3rem;margin:1.1rem 0;
+  border:1px solid var(--oro);outline:1px solid var(--oro);outline-offset:-6px;
+  box-shadow:0 6px 16px rgba(0,0,0,.45);
+}
+.q p{margin:.1rem 0 .6rem;font-weight:600;font-family:'Playfair Display',serif}
+.q label{
+  display:inline-block;background:transparent;border:1px solid var(--tinta);border-radius:var(--radio);
+  padding:.25rem .8rem;margin:.2rem .25rem .2rem 0;cursor:pointer;font-size:1rem
+}
+.q label:hover{border-color:var(--rojo);color:var(--rojo)}
+.q input{display:none}
+.q label:has(input:checked){background:var(--rojo);border-color:var(--rojo);color:var(--papel)}
+
+.bar{height:8px;background:var(--negro);border:1px solid var(--oro);overflow:hidden;position:sticky;top:62px;z-index:2}
+.bar div{height:100%;width:0;background:var(--oro);transition:width .3s}
+
+.rec{border-left:8px solid var(--rojo)}
+.rec .n{font-family:'Poiret One',sans-serif;font-weight:700;font-size:.85rem;color:var(--rojo);letter-spacing:.15em;text-transform:uppercase}
+.rec h3{margin:.2rem 0;font-family:'Playfair Display',serif;font-size:1.45rem}
+.rec .btn{box-shadow:none}
+.portada{text-align:center}
+.portada img{max-width:200px;width:60%;margin:.4rem auto .8rem;display:block;border:3px solid var(--oro);box-shadow:0 6px 14px rgba(0,0,0,.4)}
+.portada small{display:block;margin:.3rem 0 .8rem;color:var(--rojo)}
+.err{color:#fde8ec;background:#5a1414;padding:.8rem;border:1px solid #c66;border-radius:var(--radio)}
+.centro{text-align:center}
+
+iframe{width:100%;height:420px;border:2px solid var(--oro);border-radius:var(--radio);margin-top:1rem;filter:sepia(.35)}
+
+.team{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:.9rem}
+.team div{
+  background:var(--negro);color:var(--oro);border:1px solid var(--oro);border-radius:var(--radio);
+  padding:1rem;text-align:center;font-family:'Playfair Display',serif;font-weight:700
+}
+.team span{display:block;font-size:2rem}
+
+/* ---------- Pie con teclado de piano ---------- */
+footer{
+  text-align:center;font-size:.85rem;padding:1.4rem 1rem 1rem;color:var(--oro);
+  font-family:'Poiret One',sans-serif;font-weight:700;letter-spacing:.2em;text-transform:uppercase;
+}
+.piano{height:44px;margin-bottom:.8rem;border-top:3px double var(--oro);background:
+  repeating-linear-gradient(90deg, transparent 0 15px, var(--negro) 15px 27px, transparent 27px 48px, var(--negro) 48px 60px, transparent 60px 96px, var(--negro) 96px 108px, transparent 108px 168px) top/100% 60% no-repeat,
+  repeating-linear-gradient(90deg, var(--papel) 0 22px, var(--negro) 22px 24px);}
+#adminBtn{background:none;border:0;color:var(--oro);opacity:.5;cursor:pointer;font-size:1rem;margin-left:.4rem}
+#adminBtn:hover{opacity:1}
+
+/* ---------- Panel de administrador ---------- */
+#admin{
+  position:fixed;top:0;right:0;height:100%;width:min(340px,100%);z-index:50;
+  background:#1b1410;color:#f3e6cc;border-left:3px double #c9a14a;
+  font-family:system-ui,sans-serif;font-size:.9rem;padding:1rem;overflow-y:auto;
+  transform:translateX(105%);transition:transform .25s;box-shadow:-6px 0 20px rgba(0,0,0,.6);
+}
+#admin.abierto{transform:none}
+#admin h4{margin:.2rem 0 .8rem;color:#c9a14a;font-size:1.1rem;display:flex;justify-content:space-between;align-items:center}
+#admin h5{margin:1rem 0 .4rem;color:#c9a14a;text-transform:uppercase;letter-spacing:.1em;font-size:.75rem;border-bottom:1px solid #4a3a2a;padding-bottom:.2rem}
+#admin label{display:flex;justify-content:space-between;align-items:center;gap:.5rem;margin:.35rem 0}
+#admin input[type=color]{width:46px;height:28px;border:1px solid #c9a14a;background:none;padding:0;cursor:pointer}
+#admin select,#admin input[type=text],#admin input[type=password]{flex:1;max-width:180px;background:#2b211a;color:#f3e6cc;border:1px solid #6b5536;border-radius:4px;padding:.3rem}
+#admin input[type=range]{flex:1;max-width:160px}
+#admin .fila{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.8rem}
+#admin button{background:#c9a14a;color:#14100c;border:0;border-radius:4px;padding:.45rem .7rem;font-weight:700;cursor:pointer}
+#admin button.gris{background:#4a3a2a;color:#f3e6cc}
+#admin .nota{font-size:.75rem;opacity:.7;margin:.6rem 0 0}
+#adminLogin p{margin:.3rem 0 .6rem}
+</style>
+</head>
+<body>
+<header>
+  <b id="logo">ILoveBooks</b>
+  <nav id="nav">
+    <button data-s="inicio" class="on">Inicio</button>
+    <button data-s="cuestionario">Cuestionario</button>
+    <button data-s="recomendaciones">Recomendaciones</button>
+    <button data-s="mapa">Mapa</button>
+    <button data-s="nosotros">Quiénes somos</button>
+  </nav>
+</header>
+
+<main>
+<!-- 1. INICIO -->
+<section id="inicio" class="on">
+  <div class="hero">
+    <h1 id="tituloPortada">ILoveBooks</h1>
+    <p class="script" id="lema">Literary Café</p>
+    <p class="sub">✦ Club de lectores · Est. 2026 ✦</p>
+    <p><b>¡Bienvenido, lector!</b> Esta página te ayuda a encontrar tu próximo libro favorito. Responde un cuestionario de 12 preguntas sobre tus gustos (géneros, tramas, ambientes…) y te daremos <b>4 recomendaciones</b> ordenadas de la que más se parece a ti a la que menos, con una descripción y un enlace para comprarlo o leerlo legalmente en línea.</p>
+    <p>¿No sueles leer pero quieres empezar? Perfecto: aquí descubrirás qué estilo puede gustarte. También te mostramos las librerías cercanas.</p>
+    <button class="btn" onclick="show('cuestionario')">Empezar el cuestionario</button>
+  </div>
+</section>
+
+<!-- 2. CUESTIONARIO -->
+<section id="cuestionario">
+  <h2>Cuéntanos qué te gusta</h2>
+  <div class="bar"><div id="prog"></div></div>
+  <div id="qs"></div>
+  <div class="centro"><button class="btn" id="enviar">✦ Obtener mis recomendaciones ✦</button></div>
+  <p id="aviso" class="err" style="display:none"></p>
+</section>
+
+<!-- 3. RECOMENDACIONES -->
+<section id="recomendaciones">
+  <h2>Tus recomendaciones</h2>
+  <p class="centro">Ordenadas de la que más se apega a tus gustos a la que menos.</p>
+  <div id="resultado"><p class="centro">Aún no hay recomendaciones. Contesta primero el cuestionario.</p></div>
+</section>
+
+<!-- 4. MAPA -->
+<section id="mapa">
+  <h2>Librerías cerca de ti</h2>
+  <p class="centro">Pulsa el botón para permitir tu ubicación y ver las librerías más cercanas en Google Maps.</p>
+  <div class="centro">
+    <button class="btn sec" id="loc">Usar mi ubicación</button>
+    <a class="btn" id="abrir" target="_blank" rel="noopener" href="https://www.google.com/maps/search/librer%C3%ADas+cerca+de+m%C3%AD">Abrir en Google Maps</a>
+  </div>
+  <p id="locmsg" class="centro"></p>
+  <iframe id="map" loading="lazy" title="Mapa de librerías" src="https://maps.google.com/maps?q=librer%C3%ADas&output=embed"></iframe>
+</section>
+
+<!-- 5. QUIÉNES SOMOS -->
+<section id="nosotros">
+  <h2>Quiénes somos</h2>
+  <div class="team">
+    <div><span>📖</span>Luana González</div>
+    <div><span>📖</span>Renata Bojórquez</div>
+    <div><span>📖</span>Derek Lugo</div>
+    <div><span>📖</span>Said Aragón</div>
+  </div>
+  <div class="card">
+    <p>Somos un grupo de estudiantes a quienes nos encanta leer. Creamos esta página para que encontrar libros que te gusten sea más fácil, y para motivar a las personas que no leen pero quieren empezar y no saben qué estilo les puede gustar.</p>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="piano"></div>
+  ILoveBooks · Hecho por estudiantes lectores
+  <button id="adminBtn" title="Administrador">⚙</button>
+</footer>
+
+<!-- ====== PANEL DE ADMINISTRADOR ====== -->
+<aside id="admin" aria-label="Panel de administrador">
+  <h4>⚙ Administrador <button class="gris" id="cerrarAdmin">✕</button></h4>
+
+  <div id="adminLogin">
+    <p>Escribe la contraseña de administrador:</p>
+    <label><input type="password" id="adminPass" placeholder="Contraseña"></label>
+    <div class="fila"><button id="entrar">Entrar</button></div>
+    <p class="nota" id="loginMsg"></p>
+  </div>
+
+  <div id="adminPanel" style="display:none">
+    <h5>Colores</h5>
+    <label>Fondo <input type="color" data-var="--fondo"></label>
+    <label>Papel (tarjetas) <input type="color" data-var="--papel"></label>
+    <label>Texto en tarjetas <input type="color" data-var="--tinta"></label>
+    <label>Dorado (acentos) <input type="color" data-var="--oro"></label>
+    <label>Vino (secundario) <input type="color" data-var="--rojo"></label>
+    <label>Negro (barra) <input type="color" data-var="--negro"></label>
+
+    <h5>Tipografía</h5>
+    <label>Títulos
+      <select data-var="--fuente-titulo">
+        <option value="'Limelight', serif">Limelight (art déco)</option>
+        <option value="'Abril Fatface', serif">Abril Fatface</option>
+        <option value="'Poiret One', sans-serif">Poiret One</option>
+        <option value="'Playfair Display', serif">Playfair Display</option>
+        <option value="'Great Vibes', cursive">Great Vibes (cursiva)</option>
+        <option value="Georgia, serif">Georgia</option>
+      </select></label>
+    <label>Texto
+      <select data-var="--fuente-texto">
+        <option value="'Cormorant Garamond', Georgia, serif">Cormorant Garamond</option>
+        <option value="'Playfair Display', serif">Playfair Display</option>
+        <option value="Georgia, serif">Georgia</option>
+        <option value="system-ui, sans-serif">Moderna (sans)</option>
+      </select></label>
+
+    <h5>Detalles</h5>
+    <label>Patrón de fondo
+      <select data-var="--patron"><option value="1">Visible</option><option value="0">Oculto</option></select></label>
+    <label>Esquinas <input type="range" min="0" max="24" data-var="--radio" data-unit="px"></label>
+
+    <h5>Textos</h5>
+    <label>Logo <input type="text" data-txt="#logo"></label>
+    <label>Título portada <input type="text" data-txt="#tituloPortada"></label>
+    <label>Frase cursiva <input type="text" data-txt="#lema"></label>
+
+    <h5>Seguridad</h5>
+    <label>Nueva contraseña <input type="password" id="nuevaPass" placeholder="(opcional)"></label>
+
+    <div class="fila">
+      <button id="guardar">Guardar</button>
+      <button class="gris" id="restaurar">Restaurar original</button>
+      <button class="gris" id="descargar">Descargar página</button>
+    </div>
+    <p class="nota" id="adminMsg"></p>
+    <p class="nota">Los cambios se guardan en este navegador. Para que todos los vean, usa «Descargar página» y sube ese archivo a tu sitio.</p>
+  </div>
+</aside>
+
+<script>
+/* ====== CONFIGURACIÓN ======
+   Las recomendaciones se calculan con un SISTEMA DE PUNTOS en el navegador (instantáneo, sin IA, sin tokens).
+   BUSCAR_EN_GOOGLE = true  → busca libros de tus 3 géneros en Google Books (gratis, sin clave).
+   BUSCAR_EN_GOOGLE = false → usa solo el catálogo de abajo (aún más rápido, funciona sin internet). */
+const BUSCAR_EN_GOOGLE = true;
+const ESPERA_MAX_GOOGLE = 2000; // ms; si Google tarda más, se usa el catálogo
+
+const PREGUNTAS = [
+ {q:"¿Qué género te llama más la atención?",o:["Fantasía","Ciencia ficción","Romance","Misterio / Thriller","Terror","Novela histórica","Realista / Contemporánea"]},
+ {q:"¿Qué tipo de final prefieres?",o:["Feliz","Triste o agridulce","Abierto","Con giro sorpresa"]},
+ {q:"¿Qué ritmo de lectura te gusta?",o:["Rápido y lleno de acción","Pausado y reflexivo","Equilibrado"]},
+ {q:"¿Qué extensión prefieres?",o:["Corto (menos de 200 páginas)","Mediano (200-400)","Largo (más de 400)","Me da igual"]},
+ {q:"¿Qué tipo de protagonista disfrutas más?",o:["Héroe valiente","Antihéroe","Persona común y corriente","Genio o misterioso","Grupo de amigos"]},
+ {q:"¿Qué ambiente te atrae?",o:["Mundos mágicos","Futuro o espacio","Ciudades modernas","Pueblos o campo","Épocas antiguas"]},
+ {q:"¿Qué quieres sentir al leer?",o:["Emoción y adrenalina","Ternura y romance","Intriga","Miedo","Reflexión","Risa"]},
+ {q:"¿Qué tramas te enganchan?",o:["Aventuras y viajes","Amor y relaciones","Resolver un crimen o enigma","Supervivencia","Crecer y descubrirse","Venganza o conflictos de poder"]},
+ {q:"¿Qué público/edad de personajes prefieres?",o:["Juvenil (young adult)","Adulto","Me da igual"]},
+ {q:"¿Qué tan romántica quieres la historia?",o:["Nada","Un poquito de fondo","Muy protagonista"]},
+ {q:"¿Qué tipo de idioma o autoría prefieres?",o:["Autores en español","Traducciones de cualquier país","Me da igual"]},
+ {q:"¿Qué tanta experiencia tienes leyendo?",o:["Casi nunca leo (quiero empezar)","Leo de vez en cuando","Leo seguido","Soy lector/a voraz"]}
+];
+
+const $ = s => document.querySelector(s);
+
+// Navegación
+function show(id){
+  document.querySelectorAll('section').forEach(s=>s.classList.toggle('on',s.id===id));
+  document.querySelectorAll('#nav button').forEach(b=>b.classList.toggle('on',b.dataset.s===id));
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+document.querySelectorAll('#nav button').forEach(b=>b.onclick=()=>show(b.dataset.s));
+
+// Cuestionario
+$('#qs').innerHTML = PREGUNTAS.map((p,i)=>`
+  <div class="card q"><p>${i+1}. ${p.q}</p>
+  ${p.o.map(o=>`<label><input type="radio" name="q${i}" value="${o}"><span>${o}</span></label>`).join('')}</div>`).join('');
+$('#qs').addEventListener('change',()=>{
+  const n = PREGUNTAS.filter((_,i)=>document.querySelector(`input[name=q${i}]:checked`)).length;
+  $('#prog').style.width = (n/PREGUNTAS.length*100)+'%';
+});
+
+/* ====== SISTEMA DE PUNTOS ======
+   Cada respuesta suma puntos a uno o varios géneros. Los 3 con más puntos son tus géneros. */
+const GENEROS = {
+  fan:{n:'Fantasía',          q:'fantasy'},
+  cf: {n:'Ciencia ficción',   q:'science fiction'},
+  rom:{n:'Romance',           q:'romance'},
+  mis:{n:'Misterio / Thriller',q:'mystery'},
+  ter:{n:'Terror',            q:'horror'},
+  his:{n:'Novela histórica',  q:'historical fiction'},
+  rea:{n:'Realista / Contemporánea', q:'literary fiction'}
+};
+const PUNTOS = {
+  // 1. Género
+  "Fantasía":{fan:6},"Ciencia ficción":{cf:6},"Romance":{rom:6},"Misterio / Thriller":{mis:6},"Terror":{ter:6},"Novela histórica":{his:6},"Realista / Contemporánea":{rea:6},
+  // 2. Final
+  "Feliz":{rom:2,fan:1},"Triste o agridulce":{rea:2,his:1},"Abierto":{rea:1,cf:1},"Con giro sorpresa":{mis:2,ter:1},
+  // 3. Ritmo
+  "Rápido y lleno de acción":{mis:1,fan:1,cf:1,ter:1},"Pausado y reflexivo":{rea:2,his:1},"Equilibrado":{rom:1},
+  // 5. Protagonista
+  "Héroe valiente":{fan:2,cf:1},"Antihéroe":{mis:1,cf:1,ter:1},"Persona común y corriente":{rea:2,rom:1},"Genio o misterioso":{mis:2,cf:1},"Grupo de amigos":{fan:1,rea:1},
+  // 6. Ambiente
+  "Mundos mágicos":{fan:3},"Futuro o espacio":{cf:3},"Ciudades modernas":{rea:1,mis:1,rom:1},"Pueblos o campo":{rom:1,ter:1,rea:1},"Épocas antiguas":{his:3},
+  // 7. Sentir
+  "Emoción y adrenalina":{mis:2,cf:1},"Ternura y romance":{rom:3},"Intriga":{mis:3},"Miedo":{ter:3},"Reflexión":{rea:2,cf:1},"Risa":{rea:1,rom:1},
+  // 8. Trama
+  "Aventuras y viajes":{fan:2,cf:1},"Amor y relaciones":{rom:3},"Resolver un crimen o enigma":{mis:3},"Supervivencia":{ter:2,cf:1},"Crecer y descubrirse":{rea:2},"Venganza o conflictos de poder":{fan:1,his:1,mis:1},
+  // 10. Romance
+  "Nada":{rom:-3},"Muy protagonista":{rom:3}
+};
+
+function analizar(resp){
+  const pts = Object.fromEntries(Object.keys(GENEROS).map(g=>[g,0]));
+  resp.forEach(r=>Object.entries(PUNTOS[r]||{}).forEach(([g,v])=>pts[g]+=v));
+  const top = Object.keys(pts).sort((a,b)=>pts[b]-pts[a]).slice(0,3);
+  const ext = resp[3], exp = resp[11];
+  return {
+    pts, top, sentir: resp[6],
+    juvenil: resp[8].startsWith('Juvenil') ? true : resp[8]==='Adulto' ? false : null,
+    espanol: resp[10]==='Autores en español',
+    paginas: ext.startsWith('Corto') ? [0,200] : ext.startsWith('Mediano') ? [200,400] : ext.startsWith('Largo') ? [400,5000]
+           : exp.startsWith('Casi nunca') ? [0,320] : null
+  };
+}
+
+/* ====== CATÁLOGO DE RESPALDO ======
+   t=título a=autor g=género p=páginas aprox. j=juvenil es=autor en español d=descripción
+   Puedes agregar más libros copiando una línea. */
+const CATALOGO = [
+ {g:'fan',t:'El Hobbit',a:'J.R.R. Tolkien',p:310,j:1,d:'Bilbo Bolsón, un hobbit que ama la tranquilidad, termina en un viaje con enanos y un mago para recuperar un tesoro custodiado por un dragón.'},
+ {g:'fan',t:'Harry Potter y la piedra filosofal',a:'J.K. Rowling',p:256,j:1,d:'Un niño descubre que es mago y entra a Hogwarts, una escuela llena de secretos, amistades y peligros.'},
+ {g:'fan',t:'Memorias de Idhún: La Resistencia',a:'Laura Gallego',p:560,j:1,es:1,d:'Dos jóvenes de nuestro mundo se ven atrapados en la lucha contra un nigromante que ha conquistado el mundo mágico de Idhún.'},
+ {g:'fan',t:'El Principito',a:'Antoine de Saint-Exupéry',p:96,j:1,d:'Un piloto perdido en el desierto conoce a un pequeño príncipe que viaja entre planetas. Breve, poético y perfecto para empezar.'},
+ {g:'fan',t:'El nombre del viento',a:'Patrick Rothfuss',p:880,d:'Kvothe, un héroe convertido en leyenda, cuenta su propia historia: su infancia, su paso por la Universidad y su búsqueda de la verdad.'},
+ {g:'fan',t:'Mistborn: El imperio final',a:'Brandon Sanderson',p:670,d:'En un mundo cubierto de ceniza, una joven ladrona descubre un sistema de magia basado en metales y se une a un plan para derrocar a un tirano.'},
+ {g:'cf', t:'Fahrenheit 451',a:'Ray Bradbury',p:175,d:'En un futuro donde los bomberos queman libros, uno de ellos empieza a preguntarse qué está destruyendo realmente.'},
+ {g:'cf', t:'Los juegos del hambre',a:'Suzanne Collins',p:400,j:1,d:'Katniss se ofrece como tributo en un reality mortal organizado por un gobierno opresor. Acción constante de principio a fin.'},
+ {g:'cf', t:'El juego de Ender',a:'Orson Scott Card',p:380,j:1,d:'Un niño genio es entrenado en una escuela militar espacial para enfrentar una invasión alienígena.'},
+ {g:'cf', t:'La invención de Morel',a:'Adolfo Bioy Casares',p:130,es:1,d:'Un fugitivo llega a una isla aparentemente desierta donde ocurren cosas imposibles. Una novela corta e inquietante.'},
+ {g:'cf', t:'Un mundo feliz',a:'Aldous Huxley',p:250,d:'Una sociedad perfecta donde todos son felices… a cambio de su libertad. Un clásico que invita a pensar.'},
+ {g:'cf', t:'Proyecto Hail Mary',a:'Andy Weir',p:500,d:'Un astronauta despierta solo en una nave sin recordar su misión: salvar a la Tierra. Ciencia, humor y suspenso.'},
+ {g:'rom',t:'Orgullo y prejuicio',a:'Jane Austen',p:430,d:'Elizabeth Bennet y el señor Darcy chocan por sus prejuicios en la Inglaterra del siglo XIX. Ingenio y romance clásico.'},
+ {g:'rom',t:'Bajo la misma estrella',a:'John Green',p:300,j:1,d:'Dos adolescentes se conocen en un grupo de apoyo y viven una historia de amor intensa, divertida y emotiva.'},
+ {g:'rom',t:'Como agua para chocolate',a:'Laura Esquivel',p:250,es:1,d:'Tita expresa su amor prohibido a través de la cocina en el México revolucionario, con recetas y toques mágicos.'},
+ {g:'rom',t:'A todos los chicos de los que me enamoré',a:'Jenny Han',p:350,j:1,d:'Las cartas secretas que Lara Jean escribió a sus amores llegan por accidente a sus destinatarios. Tierno y divertido.'},
+ {g:'rom',t:'El amor en los tiempos del cólera',a:'Gabriel García Márquez',p:460,es:1,d:'Un amor que espera más de cincuenta años en una ciudad del Caribe. Una historia sobre la paciencia y la pasión.'},
+ {g:'mis',t:'Y no quedó ninguno',a:'Agatha Christie',p:230,d:'Diez desconocidos son invitados a una isla y empiezan a desaparecer uno a uno. Uno de los misterios más famosos.'},
+ {g:'mis',t:'Estudio en escarlata',a:'Arthur Conan Doyle',p:160,d:'La primera aventura de Sherlock Holmes y el doctor Watson: un crimen en Londres y una deducción brillante.'},
+ {g:'mis',t:'Asesinato para principiantes',a:'Holly Jackson',p:450,j:1,d:'Una estudiante reabre un caso de asesinato de su pueblo como proyecto escolar y descubre más de lo que esperaba.'},
+ {g:'mis',t:'La sombra del viento',a:'Carlos Ruiz Zafón',p:570,es:1,d:'En la Barcelona de posguerra, un joven investiga a un autor olvidado cuyos libros alguien está destruyendo.'},
+ {g:'mis',t:'El curioso incidente del perro a medianoche',a:'Mark Haddon',p:270,j:1,d:'Christopher, un chico con una mente extraordinaria, investiga quién mató al perro de su vecina.'},
+ {g:'ter',t:'Coraline',a:'Neil Gaiman',p:160,j:1,d:'Coraline encuentra una puerta a una casa idéntica a la suya, pero con una "otra madre" con botones por ojos.'},
+ {g:'ter',t:'Cuentos de amor de locura y de muerte',a:'Horacio Quiroga',p:180,es:1,d:'Relatos breves y escalofriantes ambientados en la selva, de uno de los maestros del cuento latinoamericano.'},
+ {g:'ter',t:'Frankenstein',a:'Mary Shelley',p:280,d:'Un científico crea vida y debe enfrentar las consecuencias. El origen del terror y la ciencia ficción modernos.'},
+ {g:'ter',t:'Las cosas que perdimos en el fuego',a:'Mariana Enriquez',p:200,es:1,d:'Cuentos de terror contemporáneo ambientados en Argentina, donde lo cotidiano se vuelve perturbador.'},
+ {g:'ter',t:'It',a:'Stephen King',p:1100,d:'Un grupo de amigos enfrenta a una criatura que adopta la forma de sus peores miedos, primero de niños y luego de adultos.'},
+ {g:'his',t:'La ladrona de libros',a:'Markus Zusak',p:550,j:1,d:'En la Alemania nazi, una niña roba libros y los comparte con quienes la rodean. Narrada por la Muerte.'},
+ {g:'his',t:'El niño con el pijama de rayas',a:'John Boyne',p:220,j:1,d:'La amistad entre dos niños separados por una cerca durante la Segunda Guerra Mundial. Breve y conmovedora.'},
+ {g:'his',t:'El capitán Alatriste',a:'Arturo Pérez-Reverte',p:250,es:1,d:'Aventuras de espadas e intrigas en el Madrid del Siglo de Oro, protagonizadas por un soldado veterano.'},
+ {g:'his',t:'La casa de los espíritus',a:'Isabel Allende',p:450,es:1,d:'La historia de varias generaciones de una familia chilena, con amor, política y un toque de magia.'},
+ {g:'his',t:'Los pilares de la Tierra',a:'Ken Follett',p:1100,d:'La construcción de una catedral en la Inglaterra medieval une las vidas de constructores, monjes y nobles.'},
+ {g:'rea',t:'Las ventajas de ser invisible',a:'Stephen Chbosky',p:230,j:1,d:'Charlie, un chico tímido, cuenta en cartas su primer año de preparatoria, sus amistades y sus descubrimientos.'},
+ {g:'rea',t:'Wonder',a:'R.J. Palacio',p:400,j:1,d:'Auggie, un niño con una diferencia facial, va a la escuela por primera vez. Una historia sobre la empatía.'},
+ {g:'rea',t:'Crónica de una muerte anunciada',a:'Gabriel García Márquez',p:120,es:1,d:'Todo el pueblo sabía que iban a matar a Santiago Nasar. ¿Por qué nadie lo evitó? Corta e hipnótica.'},
+ {g:'rea',t:'El túnel',a:'Ernesto Sabato',p:150,es:1,d:'Un pintor confiesa desde el principio un crimen y explica la obsesión que lo llevó a cometerlo.'},
+ {g:'rea',t:'El guardián entre el centeno',a:'J.D. Salinger',p:240,d:'Holden Caulfield deambula por Nueva York tras ser expulsado de su escuela, cuestionándolo todo.'}
+];
+
+/* ====== RESPUESTA PREDETERMINADA ======
+   Mismo formato de siempre (título, autor, descripción). La descripción se arma con una plantilla fija. */
+function motivo(g, perfil){
+  const n = GENEROS[g].n.toLowerCase(), pos = perfil.top.indexOf(g);
+  if(pos===0) return `Encaja con tu gusto por ${n} y con lo que buscas sentir: ${perfil.sentir.toLowerCase()}. `;
+  return `${pos===1?'Tu segundo':'Tu tercer'} género con más puntos es ${n}; esta es una buena opción para explorarlo. `;
+}
+function recortar(txt){
+  const s = String(txt||'').replace(/<[^>]+>/g,'').replace(/\s+/g,' ').trim().split(/(?<=[.!?])\s+/).slice(0,2).join(' ');
+  return s.length>320 ? s.slice(0,317).replace(/\s\S*$/,'')+'…' : s;
+}
+const clave = (t,a)=>(t+'|'+a).toLowerCase().normalize('NFD').replace(/[^a-z0-9|]/g,'');
+
+function puntuar(libro, g, perfil){
+  let s = 0;
+  if(perfil.paginas && libro.p){ s += (libro.p>=perfil.paginas[0] && libro.p<=perfil.paginas[1]) ? 3 : -2; }
+  if(perfil.juvenil!==null) s += (!!libro.j===perfil.juvenil) ? 2 : -1;
+  if(perfil.espanol) s += libro.es ? 3 : 0;
+  return s;
+}
+function desdeCatalogo(g, perfil){
+  return CATALOGO.filter(l=>l.g===g)
+    .map(l=>({titulo:l.t, autor:l.a, descripcion:motivo(g,perfil)+l.d, img:'', _s:puntuar(l,g,perfil)}));
+}
+
+/* ====== BÚSQUEDA EN GOOGLE BOOKS (gratis, sin clave) ====== */
+const BASURA = /antolog|gu[ií]a|cuaderno|estudio|an[aá]lisis|resumen|summary|workbook|colecci[oó]n|pack|box set|lote|tomo [ivx\d]+ al|obras completas|revista/i;
+async function desdeGoogle(g, perfil){
+  const ctl = new AbortController(); const timer = setTimeout(()=>ctl.abort(), ESPERA_MAX_GOOGLE);
+  try{
+    const url = 'https://www.googleapis.com/books/v1/volumes?maxResults=40&printType=books&langRestrict=es&orderBy=relevance&q='+encodeURIComponent('subject:"'+GENEROS[g].q+'"');
+    const d = await (await fetch(url,{signal:ctl.signal})).json();
+    return (d.items||[]).map(v=>v.volumeInfo||{}).filter(v=>
+      v.title && v.authors?.length && (v.description||'').length>=80 && v.imageLinks &&
+      (v.pageCount||0)>=60 && !BASURA.test(v.title) &&
+      (v.categories||[]).some(c=>/fiction|ficci[oó]n|novel/i.test(c))
+    ).map(v=>{
+      const cat = (v.categories||[]).join(' ');
+      const libro = {p:v.pageCount, j:/juvenile|young adult/i.test(cat)};
+      return {
+        titulo: v.title+(v.subtitle&&v.subtitle.length<40?': '+v.subtitle:''), autor: v.authors.slice(0,2).join(', '),
+        descripcion: motivo(g,perfil)+recortar(v.description),
+        img: (v.imageLinks.thumbnail||v.imageLinks.smallThumbnail||'').replace(/^http:/,'https:').replace('&edge=curl',''),
+        _s: puntuar(libro,g,perfil) + 1   // +1: preferimos lo encontrado en Google si empata
+      };
+    });
+  }catch(e){ return []; }
+  finally{ clearTimeout(timer); }
+}
+
+/* 4 recomendaciones: 2 del género #1, 1 del #2 y 1 del #3 (de más a menos parecido) */
+async function recomendar(perfil){
+  const cupos = [[perfil.top[0],2],[perfil.top[1],1],[perfil.top[2],1]];
+  const google = BUSCAR_EN_GOOGLE ? await Promise.all(cupos.map(([g])=>desdeGoogle(g,perfil))) : [[],[],[]];
+  const usados = new Set(), lista = [];
+  cupos.forEach(([g,n],i)=>{
+    // Google + catálogo compiten por puntos; gana el que mejor encaja con tus respuestas
+    const candidatos = [...google[i], ...desdeCatalogo(g,perfil)].sort((a,b)=>b._s-a._s);
+    let puestos = 0;
+    for(const l of candidatos){ if(puestos>=n) break; const k=clave(l.titulo,l.autor); if(!usados.has(k)){ usados.add(k); lista.push(l); puestos++; } }
+  });
+  return lista;
+}
+
+$('#enviar').onclick = async () => {
+  const aviso = $('#aviso'); aviso.style.display='none';
+  const faltan = PREGUNTAS.map((p,i)=>document.querySelector(`input[name=q${i}]:checked`)?null:i+1).filter(Boolean);
+  if(faltan.length){ aviso.textContent='Te faltan las preguntas: '+faltan.join(', '); aviso.style.display='block'; return; }
+  const resp = PREGUNTAS.map((p,i)=>document.querySelector(`input[name=q${i}]:checked`).value);
+  const perfil = analizar(resp);
+  show('recomendaciones');
+  $('#resultado').innerHTML = `<p class="centro"><b>Tus géneros:</b> ${perfil.top.map(g=>esc(GENEROS[g].n)).join(' · ')}</p><p class="centro" id="cargando">♫ Buscando libros…</p>`;
+  const libros = await recomendar(perfil);
+  $('#resultado').innerHTML = `<p class="centro"><b>Tus géneros:</b> ${perfil.top.map(g=>esc(GENEROS[g].n)).join(' · ')}</p>`
+    + '<ol style="padding:0;list-style:none">'+libros.map(tarjeta).join('')+'</ol>';
+};
+
+/* ====== PORTADAS ======
+   Si Google ya dio la portada se muestra directo; si no, se busca gratis en Google Books y luego en Open Library. */
+async function buscarPortada(titulo, autor){
+  try{
+    const r = await fetch('https://www.googleapis.com/books/v1/volumes?maxResults=5&q='+encodeURIComponent('intitle:'+titulo+' inauthor:'+autor));
+    const d = await r.json();
+    for(const v of d.items||[]){
+      const img = v.volumeInfo?.imageLinks;
+      const u = img && (img.thumbnail || img.smallThumbnail);
+      if(u) return u.replace(/^http:/,'https:').replace('&edge=curl','');
+    }
+  }catch(e){}
+  try{
+    const r = await fetch('https://openlibrary.org/search.json?limit=5&fields=cover_i&title='+encodeURIComponent(titulo)+'&author='+encodeURIComponent(autor));
+    const d = await r.json();
+    const doc = (d.docs||[]).find(x=>x.cover_i);
+    if(doc) return 'https://covers.openlibrary.org/b/id/'+doc.cover_i+'-L.jpg';
+  }catch(e){}
+  return '';
+}
+$('#resultado').addEventListener('click', async e=>{
+  const b = e.target.closest('.portada-btn'); if(!b) return;
+  const caja = b.closest('.rec').querySelector('.portada');
+  if(caja.dataset.lista){                     // ya cargada: mostrar/ocultar
+    const oculto = caja.style.display==='none';
+    caja.style.display = oculto ? '' : 'none';
+    b.textContent = oculto ? 'Ocultar portada' : 'Ver portada';
+    return;
+  }
+  b.disabled = true; b.textContent = 'Buscando portada…';
+  const url = b.dataset.img || await buscarPortada(b.dataset.t, b.dataset.a);
+  caja.dataset.lista = 1;
+  if(url){
+    const img = new Image(); img.alt = 'Portada de '+b.dataset.t; img.src = url;
+    caja.replaceChildren(img); b.textContent = 'Ocultar portada';
+  } else {
+    caja.innerHTML = '<small>No encontramos la portada de este libro.</small>'; b.textContent = 'Ver portada';
+  }
+  b.disabled = false;
+});
+
+const esc = s => String(s||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+function tarjeta(l,i){
+  const busq = 'https://www.google.com/books?q='+encodeURIComponent(l.titulo+' '+l.autor);
+  return `<li class="card rec"><div class="n">${i===0?'★ Mejor coincidencia':'Coincidencia #'+(i+1)}</div>
+    <h3>${esc(l.titulo)}</h3><em>${esc(l.autor)}</em>
+    <p>${esc(l.descripcion)}</p>
+    <div class="portada"></div>
+    <button class="btn sec portada-btn" data-t="${esc(l.titulo)}" data-a="${esc(l.autor)}" data-img="${esc(l.img||'')}">Ver portada</button>
+    <a class="btn" href="${esc(busq)}" target="_blank" rel="noopener">Ver en Google Libros</a></li>`;
+}
+
+// Mapa
+$('#loc').onclick = () => {
+  if(!navigator.geolocation){ $('#locmsg').textContent='Tu navegador no permite geolocalización.'; return; }
+  $('#locmsg').textContent='Buscando tu ubicación…';
+  navigator.geolocation.getCurrentPosition(p=>{
+    const {latitude:la,longitude:lo}=p.coords;
+    $('#map').src=`https://maps.google.com/maps?q=librer%C3%ADas&ll=${la},${lo}&z=14&output=embed`;
+    $('#abrir').href=`https://www.google.com/maps/search/librer%C3%ADas/@${la},${lo},14z`;
+    $('#locmsg').textContent='Mostrando librerías cerca de ti.';
+  },()=>{$('#locmsg').textContent='No pudimos obtener tu ubicación. Permite el acceso o usa el botón de Google Maps.';});
+};
+
+/* ====== ADMINISTRADOR ======
+   Abre el panel con el botón ⚙ del pie de página o agregando #admin al final de la URL. */
+const CLAVE = 'ilovebooks-tema';
+const raiz = document.documentElement;
+const leer = k => { try{ return JSON.parse(localStorage.getItem(k)); }catch(e){ return null; } };
+const escribir = (k,v) => { try{ localStorage.setItem(k, JSON.stringify(v)); return true; }catch(e){ return false; } };
+const ORIGINAL = { vars:{}, txt:{} };
+document.querySelectorAll('#admin [data-var]').forEach(el=>{
+  ORIGINAL.vars[el.dataset.var] = getComputedStyle(raiz).getPropertyValue(el.dataset.var).trim();
+});
+document.querySelectorAll('#admin [data-txt]').forEach(el=>{ ORIGINAL.txt[el.dataset.txt] = $(el.dataset.txt).textContent; });
+
+function aplicar(tema){
+  if(!tema) return;
+  Object.entries(tema.vars||{}).forEach(([k,v])=>raiz.style.setProperty(k,v));
+  Object.entries(tema.txt||{}).forEach(([sel,v])=>{ const n=$(sel); if(n) n.textContent=v; });
+}
+function sincronizarControles(){
+  document.querySelectorAll('#admin [data-var]').forEach(el=>{
+    let v = getComputedStyle(raiz).getPropertyValue(el.dataset.var).trim();
+    if(el.dataset.unit) v = parseFloat(v)||0;
+    if(el.tagName==='SELECT' && ![...el.options].some(o=>o.value===v)){
+      const o=[...el.options].find(o=>v.startsWith(o.value.split(',')[0])); if(o) v=o.value;
+    }
+    el.value = v;
+  });
+  document.querySelectorAll('#admin [data-txt]').forEach(el=>{ el.value = $(el.dataset.txt).textContent; });
+}
+function temaActual(){
+  const t={vars:{},txt:{}};
+  document.querySelectorAll('#admin [data-var]').forEach(el=>t.vars[el.dataset.var]=el.value+(el.dataset.unit||''));
+  document.querySelectorAll('#admin [data-txt]').forEach(el=>t.txt[el.dataset.txt]=el.value);
+  return t;
+}
+aplicar(leer(CLAVE));
+
+// Vista previa en vivo
+document.querySelectorAll('#admin [data-var]').forEach(el=>el.addEventListener('input',()=>raiz.style.setProperty(el.dataset.var, el.value+(el.dataset.unit||''))));
+document.querySelectorAll('#admin [data-txt]').forEach(el=>el.addEventListener('input',()=>{ $(el.dataset.txt).textContent = el.value; }));
+
+const abrirAdmin = ()=>{ $('#admin').classList.add('abierto'); };
+$('#adminBtn').onclick = abrirAdmin;
+$('#cerrarAdmin').onclick = ()=>$('#admin').classList.remove('abierto');
+if(location.hash==='#admin') abrirAdmin();
+
+$('#entrar').onclick = () => {
+  const pass = leer(CLAVE+'-pass') || ADMIN_PASS_INICIAL;
+  if($('#adminPass').value === pass){
+    $('#adminLogin').style.display='none'; $('#adminPanel').style.display='block'; sincronizarControles();
+  } else { $('#loginMsg').textContent='Contraseña incorrecta.'; }
+};
+$('#adminPass').addEventListener('keydown',e=>{ if(e.key==='Enter') $('#entrar').click(); });
+
+$('#guardar').onclick = () => {
+  const ok = escribir(CLAVE, temaActual());
+  const np = $('#nuevaPass').value.trim();
+  if(np){ escribir(CLAVE+'-pass', np); $('#nuevaPass').value=''; }
+  $('#adminMsg').textContent = ok ? '✔ Cambios guardados.' : 'No se pudo guardar en este navegador (modo privado).';
+};
+$('#restaurar').onclick = () => {
+  try{ localStorage.removeItem(CLAVE); }catch(e){}
+  raiz.removeAttribute('style');
+  aplicar({txt:ORIGINAL.txt}); sincronizarControles();
+  $('#adminMsg').textContent='Se restauró el diseño original.';
+};
+// Descarga una copia del HTML con el tema actual ya incluido
+$('#descargar').onclick = () => {
+  const t = temaActual();
+  const copia = document.documentElement.cloneNode(true);
+  copia.removeAttribute('style');
+  copia.querySelector('#qs').innerHTML='';
+  copia.querySelector('#resultado').innerHTML='<p class="centro">Aún no hay recomendaciones. Contesta primero el cuestionario.</p>';
+  copia.querySelector('#admin').classList.remove('abierto');
+  copia.querySelector('#adminLogin').style.display=''; copia.querySelector('#adminPanel').style.display='none';
+  copia.querySelectorAll('#admin input').forEach(i=>i.removeAttribute('value'));
+  Object.entries(t.txt).forEach(([sel,v])=>{ const n=copia.querySelector(sel); if(n) n.textContent=v; });
+  const st = document.createElement('style'); st.id='tema-guardado';
+  st.textContent = ':root{'+Object.entries(t.vars).map(([k,v])=>k+':'+v).join(';')+'}';
+  const viejo = copia.querySelector('#tema-guardado'); if(viejo) viejo.remove();
+  copia.querySelector('head').appendChild(st);
+  const blob = new Blob(['<!DOCTYPE html>\n'+copia.outerHTML],{type:'text/html'});
+  const a = document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='ilovebooks.html'; a.click();
+  $('#adminMsg').textContent='Página descargada con tu diseño.';
+};
+</script>
+</body>
+</html>
